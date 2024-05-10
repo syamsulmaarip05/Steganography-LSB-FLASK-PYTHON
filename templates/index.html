@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Steganography App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <h1>Steganography</h1>
+            <a href="/" class="button">Enkripsi</a>
+            <a href="/index2" class="button">Deskripsi</a>
+            <p class="error">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <ul>
+                            {% for message in messages %}
+                                <h1>
+                                    {{ message }}
+                                </h1>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
+            </p>  
+            <form action="/encode" method="post" enctype="multipart/form-data">
+                <div class="upload-box">
+                    <label for="image-upload">UPLOAD GAMBAR</label>
+                    <input type="file" name="file" class="form-control" autocomplete="off" id="image-upload" required onchange="previewImage(this)" />
+                    <div id="image-preview"></div>
+                </div>
+                <input type="text" name="message" placeholder="Pesan" required />
+                <input type="text" name="key" placeholder="Kunci" required/>
+                <button type="submit" value="Submit" class="button btn-info">Mulai</button>
+            </form>
+            {% if filename %}
+                <img src="{{ url_for('static', filename='uploads/' + filename) }}" alt="Encoded Image" style="max-width: 300px; max-height: 300px;" />
+                <a href="{{ url_for('download_file', filename=filename) }}" class="button btn-info">Download Gambar</a>
+            {% endif %}
+            
+        </div>
+    </div>
+    <script>
+        function previewImage(input) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('image-preview').innerHTML = '<img src="' + e.target.result + '" alt="Image Preview" style="max-width: 300px; max-height: 300px;" />';
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    </script>
+</body>
+</html>
