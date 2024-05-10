@@ -36,10 +36,11 @@
                 <button type="submit" value="Submit" class="button btn-info">Mulai</button>
             </form>
             {% if filename %}
-                <img src="{{ url_for('static', filename='uploads/' + filename) }}" alt="Encoded Image" style="max-width: 300px; max-height: 300px;" />
-                <a href="{{ url_for('download_file', filename=filename) }}" class="button btn-info">Download Gambar</a>
+                {% if filename %}
+                    <img src="{{ url_for('static', filename='uploads/' + filename) }}" alt="Encoded Image" style="max-width: 300px; max-height: 300px;" />
+                    <a href="{{ url_for('download_file', filename=filename) }}" class="button btn-info">Download Gambar</a>
+                {% endif %}
             {% endif %}
-            
         </div>
     </div>
     <script>

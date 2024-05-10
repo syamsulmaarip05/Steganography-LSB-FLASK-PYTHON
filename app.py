@@ -100,7 +100,17 @@ def decode_dec(image, key):
 
 @app.route('/')
 def index():
-        return render_template('index.html')
+    # Periksa jika ada hasil encoding dalam session
+    encoding_result = session.pop('encoding_result', None)
+    if encoding_result:
+        return render_template('index.html', filename=encoding_result['filename'], encoded_image_path=encoding_result['encoded_image_path'])
+    
+    # Periksa jika ada hasil decoding dalam session
+    decoding_result = session.pop('decoding_result', None)
+    if decoding_result:
+        return render_template('decode.html', decoding_result=decoding_result)
+    
+    return render_template('index.html')
 
 @app.route('/encode', methods=['POST'])
 def encode():
@@ -127,6 +137,7 @@ def encode():
         }
         flash('Image successfully encoded')
         return redirect(url_for('index'))
+
 
 
 @app.route('/decode', methods=['POST'])
@@ -158,3 +169,4 @@ def download_file(filename):
 
 if __name__ == "__main__":
     app.run(debug=True)
+
