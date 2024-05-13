@@ -1,50 +1,76 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html>
+  <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Steganography App</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-</head>
-<body>
-    <div class="container">
-        <div class="row">
-            <h1>Steganography</h1>
-            <a href="/" class="button">Enkripsi</a>
-            <a href="/index2" class="button">Deskripsi</a>
-            <form action="/decode" method="post" enctype="multipart/form-data">
-                <div class="upload-box">
-                    <label for="image-upload">UPLOAD GAMBAR</label>
-                    <input type="file" name="file" class="form-control" autocomplete="off" id="image-upload" required onchange="previewImage(this)" />
-                    <div id="image-preview"></div>
-                </div>
-                <input type="text" name="key" placeholder="Kunci" required/>
-                <button type="submit" value="Submit" class="button btn-info">Mulai</button>
-                <div id="decoded-message" style="margin-top: 20px;"></div>
-            </form>
-            <script>
-                function previewImage(input) {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        document.getElementById('image-preview').innerHTML = '<img src="' + e.target.result + '" alt="Image Preview" style="max-width: 300px; max-height: 300px;" />';
-                    };
-                    reader.readAsDataURL(input.files[0]);
-                }
-            </script>
-            <h1 class="hasil">
-                {% with messages = get_flashed_messages() %}
-                    {% if messages %}
-                        <ul>
-                            {% for message in messages %}
-                                <h1>
-                                    {{ message }}
-                                <h1>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                {% endwith %}
-            </h1>  
+    <meta http-equiv="X-UA-Compatib1e" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=l.0" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='style.css')}}"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="judul">
+      <img class="logo-img" src="static\02.png" />
+      <div class="row">
+        <form action="/">
+            <button type="submit" class="btn" value="Submit">Enkripsi</button>
+        </form>
+        <form action="/index2">
+            <button type="submit" class="btn" value="Submit">Deskripsi</button>
+        </form>
+      </div>  
+      <div class="decode">
+        <div class="wrapper">
+          <h1>ENCODE GAMBAR</h1>
+          <form action="/decode" method="post" enctype="multipart/form-data">
+            <div class="upload-box">
+              <input type="file" name="file" class="form-control" autocomplete="off" id="image-upload" required onchange="previewImage(this)" />
+              <label for="image-upload" class="upload-button">Unggah</label>
+              <div id="image-preview"></div>
+            </div>
+            <div class="input-box">
+              <input type="text" name="key" placeholder="Kunci" required/>
+            </div>
+            <button type="submit" class="btn" value="Submit" >Mulai</button>
+          </form>
         </div>
+        <div class="wrapper">
+          <h1>HASIL DECODE</h1>
+          <div class="upload-box">
+            <h1 class="hasil">
+              {% with messages = get_flashed_messages() %}
+                  {% if messages %}
+                      <ul>
+                          {% for message in messages %}
+                              <h1>
+                                  {{ message }}
+                              <h1>
+                          {% endfor %}
+                      </ul>
+                  {% endif %}
+              {% endwith %}
+          </h1> 
+          </div> 
+        </div>
+        <script>
+          function previewImage(input) {
+              var reader = new FileReader();
+              reader.onload = function (e) {
+                  document.getElementById('image-preview').innerHTML = '<img src="' + e.target.result + '" alt="Image Preview" style="max-width: 300px; max-height: 300px;" />';
+              };
+              reader.readAsDataURL(input.files[0]);
+          }
+          </script>
+      </div>
+      <div class="copyr">
+        <h2>coppyright@by Syamsul Maarip | Salman Miqdad | Kinanti Anisa P</h2>
+      </div>
     </div>
-</body>
+  </body>
 </html>
