@@ -1,20 +1,28 @@
+# Mengimpor modul Flask dan beberapa fungsi terkait
 from flask import Flask, render_template, request, send_file, flash, redirect, url_for, session
+# Mengimpor modul Image dari PIL untuk memanipulasi gambar
 from PIL import Image
+# Mengimpor fungsi secure_filename dari modul werkzeug.utils
 from werkzeug.utils import secure_filename
+# Mengimpor modul os untuk operasi file
 import os
 
+# Inisialisasi aplikasi Flask
 app = Flask(__name__)
+# Mendefinisikan folder untuk menyimpan file upload
 UPLOAD_FOLDER = 'static/uploads/'
+# Konfigurasi kunci rahasia aplikasi
 app.secret_key = "SYAMSUL SALMAN KINAN"
+# Mengatur folder upload dan batas ukuran konten yang diizinkan
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
+# Set ekstensi file yang diizinkan
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 # Fungsi untuk memeriksa apakah ekstensi file diizinkan
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 
 # Fungsi untuk encoding pesan ke dalam gambar
 def encode_enc(image, data, key):
@@ -97,7 +105,7 @@ def decode_dec(image, key):
     
     return data[len(key):]
 
-
+# Route untuk halaman utama
 @app.route('/')
 def index():
     # Periksa jika ada hasil encoding dalam session
@@ -112,6 +120,7 @@ def index():
     
     return render_template('index.html')
 
+# Route untuk melakukan encoding pesan pada gambar
 @app.route('/encode', methods=['POST'])
 def encode():
     if 'file' not in request.files:
@@ -138,8 +147,7 @@ def encode():
         flash('Image successfully encoded')
         return redirect(url_for('index'))
 
-
-
+# Route untuk melakukan decoding pesan dari gambar
 @app.route('/decode', methods=['POST'])
 def decode():
     if 'file' not in request.files:
@@ -159,14 +167,16 @@ def decode():
         flash('{}'.format(decoded_message))
         return redirect(url_for('index2'))
 
+# Route untuk halaman decode
 @app.route('/index2')
 def index2():
     return render_template('decode.html')
 
+# Route untuk mengunduh file
 @app.route('/download/<filename>')
 def download_file(filename):
     return send_file(os.path.join(app.config['UPLOAD_FOLDER'], filename), as_attachment=True)
 
+# Menjalankan aplikasi Flask
 if __name__ == "__main__":
     app.run(debug=True)
-
